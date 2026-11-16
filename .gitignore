@@ -1,0 +1,40 @@
+# Local planning, credentials and machine configuration
+/.local/
+/.agents/
+/.codex/
+/.aws/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# External datasets, trained artifacts and runtime state
+/data/
+/models/
+/logs/
+/artifacts/
+/profiles/
+
+# Build and language caches
+/build/
+/dist/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage/
+*.o
+*.a
+*.so
+
+# Editor and OS state
+.idea/
+.vscode/
+.DS_Store
+*~
