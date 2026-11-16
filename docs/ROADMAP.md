@@ -8,7 +8,8 @@ Every checkpoint report records purpose, inputs and versions, acceptance criteri
 
 | ID | Output | Acceptance criteria | Status |
 | --- | --- | --- | --- |
-| G00 | Public repository foundation | English documentation, Apache-2.0, publication boundary, contribution process, passing checks, published repository and verified GitHub settings | In progress |
+| G00 | Public repository foundation | English documentation, Apache-2.0, publication boundary, contribution process, passing checks, published repository and verified GitHub settings | Complete |
+| G01 | Optional Project board | Account-level Projects access granted, board created and linked to existing issues | Awaiting account permission |
 
 ## Systems engineering
 
@@ -38,3 +39,11 @@ Every checkpoint report records purpose, inputs and versions, acceptance criteri
 | CP09 | Controlled adaptation | Candidate/current model comparison, rollback and independent validation for new assets | Planned |
 
 The first engineering milestone is E00–E03. No completion dates, message-rate targets or trading returns are promised. A few profitable trades or a fixed number of demo weeks do not establish statistical sufficiency.
+
+## Active engineering backlog
+
+- [First parser contract](https://github.com/gncwntd/quant-systems-lab/issues/1)
+- [Synthetic fixtures and reference states](https://github.com/gncwntd/quant-systems-lab/issues/2)
+- [Replay baseline and measurement method](https://github.com/gncwntd/quant-systems-lab/issues/3)
+
+Issues and milestones are active. A Project board is not yet configured because the current GitHub authorization lacks Projects scope.
