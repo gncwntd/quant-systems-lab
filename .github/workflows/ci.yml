@@ -27,5 +27,18 @@ jobs:
         run: python3 tools/check_repository.py
       - name: Test publication checks
         run: python3 -m unittest discover -s tests -v
+      - name: Check dashboard JavaScript syntax
+        run: node --check dashboard/app.js
+      - name: Build and test C reference book
+        run: |
+          set -eu
+          for compiler in gcc clang; do
+            cmake -S . -B "build/${compiler}" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER="${compiler}"
+            cmake --build "build/${compiler}"
+            ctest --test-dir "build/${compiler}" --output-on-failure
+            cmake -S . -B "build/${compiler}-sanitize" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER="${compiler}" -DQSL_ENABLE_SANITIZERS=ON
+            cmake --build "build/${compiler}-sanitize"
+            ctest --test-dir "build/${compiler}-sanitize" --output-on-failure
+          done
       - name: Check whitespace
         run: git diff-tree --check --root HEAD

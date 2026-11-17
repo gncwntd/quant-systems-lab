@@ -1,40 +1,72 @@
 # Quant Systems Lab
 
-An open-source laboratory for market-data systems engineering and reproducible quantitative research.
+An open-source EUR/USD research workspace with a local dashboard, reproducible experiments and market-data engineering components.
 
-**Status:** repository foundation. The parser, order book, trading engine and dashboard are not implemented yet. No trading performance is claimed.
+**Status:** local data import, cost-aware daily backtesting, descriptive regimes, historical stress resampling, experiment storage and a dashboard are implemented. A small C reference book is also available. No broker execution, adaptive model or validated trading advantage is established.
 
 ## Direction
 
-- Build a small, correct C market-data parser, order book reconstruction engine and deterministic replay tool.
-- Measure correctness, throughput, latency and memory use with reproducible workloads.
-- Develop a separate Python research track for EUR/USD, including transaction costs and time-ordered validation.
-- Add a dashboard for engineering metrics and research results.
-- Explore concurrency, networking, modern C++ and HDL simulation through later scoped experiments.
+- Deliver an inspectable EUR/USD research flow: data → strategy → costs/risk → results → experiment journal.
+- Validate financial accounting and time ordering before adding model complexity.
+- Add broker-quality data, robust validation and demo execution in subsequent checkpoints.
+- Preserve C systems components as supporting work, with optimization driven by actual requirements.
 
 Nasdaq order events and broker FX quotes are different data sources. They require separate adapters and execution assumptions. A reconstructed order book is not a matching engine, and replay alone does not establish realistic fills.
 
 ## Quick start
 
-Requires Git and Python 3.10 or newer. No third-party Python packages, market-data downloads or account credentials are needed for the foundation checks.
+Requires Python 3.10 or newer. The research app uses only the Python standard library and buildless HTML/CSS/JavaScript.
 
 ```sh
 git clone https://github.com/gncwntd/quant-systems-lab.git
 cd quant-systems-lab
-python3 tools/check_repository.py
-python3 -m unittest discover -s tests -v
+python3 tools/run_lab.py serve
 ```
 
-The repository check examines Git index contents, not ignored personal files. It enforces a publication boundary and checks local Markdown links; it does not prove that a repository contains no sensitive information. Inspect the staged diff before every commit.
+Open `http://127.0.0.1:8765`. Load ECB reference rates or import a daily `date,close` EUR/USD CSV, then run an experiment. No synthetic performance is preloaded. Data and completed experiments persist only under ignored `.local/runtime/`. JSON reports and the trade ledger can be exported from the dashboard.
+
+ECB daily reference rates are informational observations, not tradable bid/ask quotes. The app labels them accordingly and uses explicit estimated costs. This is a plumbing/research baseline; a result does not establish executable profitability. See [research methodology](docs/RESEARCH_APP.md).
+
+To fetch reference data from the command line:
+
+```sh
+python3 tools/run_lab.py fetch-ecb --start 2022-01-01 --end 2026-11-17
+```
+
+### Development checks
+
+```sh
+python3 -m unittest discover -s tests -v
+node --check dashboard/app.js
+python3 tools/check_repository.py
+```
+
+The publication checker examines Git index contents, not ignored personal files. Stage explicit public files and review the diff before using it to verify a commit candidate. Tests include loopback HTTP checks, requiring permission to open local sockets.
+
+### Run the C reference book
+
+Requires CMake 3.16+ and a C11 compiler:
+
+```sh
+cmake -S . -B build/debug -DCMAKE_BUILD_TYPE=Debug
+cmake --build build/debug
+ctest --test-dir build/debug --output-on-failure
+./build/debug/book_demo
+```
+
+The demo processes eight project-authored synthetic events. It ends at bid 99.98 × 7, ask 100.02 × 5 and a spread of 0.04 at the demo's price scale. See the [prototype contract](docs/REFERENCE_BOOK.md) for capacity, validation and sanitizer commands. This component accepts decoded events; it does not decode ITCH bytes or match incoming orders.
 
 ## Project guide
 
 - [Roadmap and checkpoints](docs/ROADMAP.md)
 - [Architecture](docs/ARCHITECTURE.md)
+- [Research app and methodology](docs/RESEARCH_APP.md)
 - [Data and publication policy](docs/PUBLICATION_POLICY.md)
 - [Development workflow](docs/DEVELOPMENT.md)
 - [Engineering measurement contract](docs/BENCHMARKS.md)
 - [Foundation report](docs/reports/2026-11-16-foundation.md)
+- [Reference book implementation report](docs/reports/2026-11-17-reference-book.md)
+- [Research dashboard implementation report](docs/reports/2026-11-17-research-app.md)
 - [Contributing](CONTRIBUTING.md), [conduct](CODE_OF_CONDUCT.md), [security](SECURITY.md)
 
 Use GitHub Issues for actionable work and milestone tracking. Discuss large changes before implementing them. Each completed checkpoint needs evidence and a short report, including failed experiments and limitations.

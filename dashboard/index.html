@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quant Systems Lab · Research terminal</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/"><span class="brand-mark">Q</span><span>QUANT SYSTEMS<span class="brand-sub">LAB / RESEARCH TERMINAL</span></span></a>
+    <div class="side-label">WORKSPACE</div>
+    <a class="nav active" href="#overview"><span>◈</span> Research overview</a>
+    <a class="nav" href="#experiments"><span>▤</span> Experiment journal</a>
+    <a class="nav" href="#trades"><span>⇄</span> Trade ledger</a>
+    <a class="nav" href="#checkpoints"><span>◎</span> Project checkpoints</a>
+    <div class="sidebar-bottom"><span class="dot"></span> LOCAL WORKSPACE<p>Data and experiments stay on this machine.</p><div class="version">v0.1 · Daily reference engine</div></div>
+  </aside>
+  <main id="overview">
+    <header><div class="breadcrumb">Workspace <span>/</span> Research overview</div><div class="mode"><span class="dot"></span> RESEARCH MODE <span class="mode-divider">/</span> NO LIVE ORDERS</div></header>
+    <div class="title-row"><div><div class="eyebrow">STRATEGY RESEARCH / EUR·USD</div><h1>Evidence before execution<span>.</span></h1><p class="subtitle">Import data. Test assumptions. Inspect every result.</p></div><button id="export-json" class="button secondary" disabled>↓ Export report</button></div>
+    <div id="message" class="message" role="status" hidden></div>
+    <section class="source-strip"><div class="instrument">EUR<span>/</span>USD <span class="tag">DAILY</span></div><div id="source-summary">No dataset loaded</div><span id="source-kind" class="tag muted">AWAITING DATA</span></section>
+    <div class="work-grid">
+      <div class="results">
+        <section class="metrics" aria-label="Backtest metrics">
+          <article class="metric"><div>NET RETURN <span>↗</span></div><strong id="return">—</strong><small id="pnl">Run an experiment to measure</small></article>
+          <article class="metric"><div>MAX DRAWDOWN <span>↘</span></div><strong id="drawdown">—</strong><small>Evaluation equity peak to trough</small></article>
+          <article class="metric"><div>NET SHARPE <span>∿</span></div><strong id="sharpe">—</strong><small>Daily returns · 252 observations/year</small></article>
+          <article class="metric"><div>CLOSED TRADES <span>⇄</span></div><strong id="trade-count">—</strong><small id="costs">Includes estimated trading costs</small></article>
+        </section>
+        <section class="panel chart-panel"><div class="panel-heading"><div><h2>Equity performance</h2><p id="evaluation">Your evaluation window will appear here.</p></div><div class="legend"><span class="key strategy"></span>Strategy <span class="key benchmark"></span>Long EUR <span class="key cash"></span>Cash</div></div><div class="chart-area"><svg id="equity-chart" role="img" aria-label="Strategy and reference equity over time" viewBox="0 0 860 300"></svg><div id="chart-empty" class="chart-empty"><span>∿</span><h3>Start with a dataset</h3><p>Import daily EUR/USD observations, then run your first experiment.</p></div></div><div class="chart-footer"><span id="chart-range">NO EXPERIMENT SELECTED</span><span id="engine-state">● Engine ready</span></div></section>
+        <div class="detail-grid"><section class="panel regime-panel"><div class="panel-heading"><h2>Market regime</h2><span class="tag">DESCRIPTIVE</span></div><div id="regime-label" class="regime-label">Awaiting data</div><p id="regime-detail">A backward-looking trend and volatility summary.</p><div class="regime-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="mini-pair"><span>Annualized volatility</span><strong id="volatility">—</strong></div><div class="mini-pair"><span>SMA gap</span><strong id="sma-gap">—</strong></div></section>
+        <section class="panel"><div class="panel-heading"><h2>Monte Carlo stress</h2><span class="tag">BLOCK BOOTSTRAP</span></div><div class="stress-title"><strong id="mc-loss">—</strong><span>sampled paths finishing below initial equity</span></div><div class="mini-pair"><span>5th / 95th final equity</span><strong id="mc-range">—</strong></div><div class="mini-pair"><span>Drawdown-limit breach</span><strong id="mc-breach">—</strong></div><p id="mc-note" class="fineprint">Conditional resampling of historical net returns. Not a forecast.</p></section></div>
+      </div>
+      <aside class="controls">
+        <section class="panel"><div class="panel-heading"><h2>Data source</h2><span class="step">01</span></div><label for="data-file" class="upload">↑ Import daily CSV<small>date,close · USD per EUR</small></label><input id="data-file" type="file" accept=".csv,text/csv" hidden><div class="or"><span></span>OR<span></span></div><div class="date-fields"><label>From<input type="date" id="ecb-start" value="2022-01-01"></label><label>To<input type="date" id="ecb-end" value="2026-11-17"></label></div><button id="fetch-ecb" class="button secondary full">Load ECB reference rates</button><p class="fineprint">ECB observations are informational reference rates, not tradable bid/ask quotes.</p><p id="data-quality" class="fineprint"></p></section>
+        <section class="panel"><div class="panel-heading"><h2>Experiment settings</h2><span class="step">02</span></div><form id="experiment-form"><label>Strategy<select disabled><option>SMA crossover · reference</option></select></label><div class="field-grid"><label>Fast window<input name="fast" type="number" min="2" max="249" value="20" required></label><label>Slow window<input name="slow" type="number" min="3" max="250" value="60" required></label></div><label>Direction<select name="directions"><option value="long_only">Long / cash</option><option value="long_short">Long / short</option></select></label><div class="field-grid"><label>Initial capital · USD<input name="capital" type="number" min="100" max="10000000" value="10000" required></label><label>Capital exposure<input name="exposure" type="number" min="0.01" max="1" step="0.01" value="0.5" required></label></div><label>Evaluation window<select name="evaluation_fraction"><option value="0.3">Last 30% of observations</option><option value="0.5">Last 50% of observations</option><option value="1">All after warm-up</option></select></label><div class="form-divider">COST & RISK ASSUMPTIONS</div><div class="field-grid"><label>Spread · pips<input name="spread_pips" type="number" min="0" max="50" step="0.1" value="1" required></label><label>Slippage / side · pips<input name="slippage_pips" type="number" min="0" max="50" step="0.1" value="0.2" required></label><label>Commission / side · bps<input name="commission_bps" type="number" min="0" max="100" step="0.01" value="0.35" required></label><label>Carrying / day · bps<input name="carrying_bps_daily" type="number" min="0" max="100" step="0.01" value="0" required></label></div><label>Drawdown halt · %<input name="max_drawdown_pct" type="number" min="0.1" max="50" step="0.1" value="10" required></label><button type="submit" id="run" class="button primary full" disabled>Run experiment <span>→</span></button><p class="fineprint">Signals are delayed one observation. Repeated runs reuse the evaluation data.</p></form></section>
+      </aside>
+    </div>
+    <section class="panel lower-panel" id="experiments"><div class="panel-heading"><div><h2>Experiment journal</h2><p>Every run is recorded with its configuration and dataset hash.</p></div><span class="tag" id="run-count">0 RUNS</span></div><div class="table-scroll"><table><thead><tr><th>Run / UTC</th><th>Windows</th><th>Net return</th><th>Max drawdown</th><th>Trades</th><th>Dataset</th><th></th></tr></thead><tbody id="experiment-rows"><tr><td colspan="7" class="empty-row">No experiments yet.</td></tr></tbody></table></div></section>
+    <section class="panel lower-panel" id="trades"><div class="panel-heading"><div><h2>Trade ledger</h2><p>Hypothetical fills, explicit costs and close reasons.</p></div><button id="export-csv" class="text-button" disabled>↓ Export CSV</button></div><div class="table-scroll"><table><thead><tr><th>Entry → exit</th><th>Side</th><th>EUR units</th><th>Entry / exit ref.</th><th>Costs · USD</th><th>Net P&L · USD</th><th>Close reason</th></tr></thead><tbody id="trade-rows"><tr><td colspan="7" class="empty-row">Run an experiment to inspect its trades.</td></tr></tbody></table></div></section>
+    <section class="lower-grid"><div class="panel" id="checkpoints"><div class="panel-heading"><h2>Project checkpoints</h2><span class="tag">DELIVERY TRACK</span></div><div id="checkpoint-list"></div></div><div class="panel"><div class="panel-heading"><h2>Model & execution assumptions</h2><span class="tag">TRANSPARENCY</span></div><ul id="assumptions"><li>Research mode only. No broker account is connected.</li><li>Import data to start; no synthetic performance is preloaded.</li></ul><div id="risk-events"></div></div></section>
+    <footer>QUANT SYSTEMS LAB <span>Local research · reproducible experiments · no live execution</span></footer>
+  </main>
+</body>
+</html>
