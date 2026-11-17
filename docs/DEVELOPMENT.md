@@ -26,9 +26,11 @@ Use short-lived `feat/`, `fix/` or `docs/` branches targeting `main`. Required c
 
 ## CI growth
 
-The foundation workflow checks publication rules, local documentation links and the policy checker's tests. No C source exists yet, so it does not claim to compile or test a trading engine.
+The workflow checks publication rules, local documentation links and the policy checker's tests. It also builds the C reference component with GCC and Clang, runs CTest and repeats the C tests under ASan/UBSan. These workflow changes require hosted verification after publication; local GCC results are recorded separately.
 
-At E01, add GCC and Clang builds, warnings, correctness tests and ASan/UBSan. Add Python and dashboard validation when those components appear. Keep commands runnable locally. Pin external Actions to full commit SHAs and update them through reviewed PRs.
+See [the reference contract](REFERENCE_BOOK.md) for local CMake/CTest commands. If LeakSanitizer reports a ptrace restriction inside a restricted execution environment, run the sanitizer tests in an appropriately authorized environment; do not report a blocked run as passing or silently disable checks. Clang is not required for a local GCC build but is included in the hosted workflow.
+
+Research tests cover accounting, one-observation signal delay, rejection of invalid data/configuration, drawdown controls, deterministic stress sampling, persistence and the loopback HTTP boundary. The dashboard has a JavaScript syntax check; browser interaction is checked separately. The application needs no third-party Python or JavaScript packages. Keep commands runnable locally. Pin external Actions to full commit SHAs and update them through reviewed PRs.
 
 Fork PR jobs use GitHub-hosted runners with read-only permissions and no secrets. Do not execute untrusted contributions through privileged `pull_request_target` jobs or on personal/self-hosted trading machines.
 

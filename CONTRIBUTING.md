@@ -1,6 +1,6 @@
 # Contributing
 
-The project is at the repository-foundation stage. Small contributions to specifications, synthetic fixtures, documentation and verification are welcome.
+The project has a local EUR/USD research dashboard and a small C reference book. Contributions should improve working research flows, data quality, accounting, validation or observability. Broker integration and adaptive models require explicit contracts and evidence.
 
 ## Before coding
 
