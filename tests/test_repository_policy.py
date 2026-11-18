@@ -14,13 +14,13 @@ SPEC.loader.exec_module(policy)
 class PublicationPolicyTests(unittest.TestCase):
     def test_local_and_sensitive_files_are_rejected(self):
         for name in ('.local/planning/README.md', '.env', 'core/.env.prod',
-                     'tests/raw.csv', 'docs/account.key', 'data/ticks.txt'):
+                     'tests/raw.csv', 'docs/account.key', 'data/ticks.txt', 'mt5/bridge.ex5'):
             with self.subTest(name=name):
                 self.assertTrue(policy.path_errors(name))
 
     def test_regular_public_files_and_placeholders_are_allowed(self):
         for name in ('README.md', '.env.example', 'tests/fixtures/event.json',
-                     'core/parser.c', '.github/workflows/ci.yml'):
+                     'core/parser.c', '.github/workflows/ci.yml', 'mt5/QSLQuoteBridge.mq5'):
             with self.subTest(name=name):
                 self.assertEqual([], policy.path_errors(name))
         self.assertTrue(policy.path_errors('docs/link.md', '120000'))

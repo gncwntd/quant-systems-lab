@@ -32,6 +32,7 @@ coverage/
 *.o
 *.a
 *.so
+*.ex5
 
 # Editor and OS state
 .idea/

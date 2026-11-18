@@ -34,7 +34,7 @@ Every completed run records configuration, engine version and loaded engine-file
 
 ## Boundaries and next delivery
 
-The app has no live trading, broker login, online learning, autonomous strategy promotion or hosting. The next data milestone is a suitable broker/demo source with verified timestamps and transaction-cost information, followed by robust time-ordered comparison and demo forward testing. The C reference book remains available as a secondary systems component.
+The app has no live trading, broker login, online learning, autonomous strategy promotion or hosting. A separate [read-only MT5 demo quote monitor](MT5_BRIDGE.md) and [streaming paper simulation](STREAMING_PAPER.md) now process new observations without altering this daily simulation. Next: historical broker data, verified timestamps and transaction-cost information, followed by robust time-ordered comparison and broker demo forward testing. The C reference book remains available as a secondary systems component.
 
 ## Official source references
 

@@ -20,6 +20,12 @@ Implemented now: strict daily CSV/ECB import, provenance hashes, a manually conf
 
 The present simulator uses daily reference prices, not broker fills. It does not provide a trained model, automated parameter search, genuinely untouched holdout validation, intraday execution, margin accounting or realistic funding data. See the methodology contract before interpreting its output.
 
+The [MT5 demo bridge](MT5_BRIDGE.md) is a separate observation path: read-only MQL5 script → common local JSON → validated loopback quote endpoint → dashboard. It exposes bid/ask/spread and freshness, without injecting snapshot data into historical experiments. Quote archives, historical broker adapters and execution remain future components.
+
+The [streaming paper path](STREAMING_PAPER.md) now consumes new validated snapshots independently of the browser. A server worker builds sampled minute midpoint candles, calculates a closed-candle SMA target and applies hypothetical bid/ask fills with explicit costs and risk checks. SQLite transactions persist cash, exposure, settings/hash, audit events and a rolling 10,000-snapshot buffer. This does not inject new observations into the daily reference simulator or send broker orders.
+
+A separate [read-only audit layer](PAPER_JOURNAL.md) reconstructs the simulated account from stored fills, pages session events by stable IDs and streams complete cutoff audit exports in bounded batches. It checks accounting independently of the strategy module without changing its frozen fingerprint or rules.
+
 All transformations must use information available at the decision time. Record unsuccessful experiments as well as selected models. Periodic retraining and walk-forward validation are distinct processes; neither guarantees improvement.
 
 FX broker quotes and Nasdaq events have different market structure, timestamp semantics and visibility. OHLC bars cannot reconstruct the original order book or queue positions. Preserve those distinctions at adapter boundaries.

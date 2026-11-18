@@ -34,7 +34,11 @@ The local [research app](RESEARCH_APP.md) delivers the first complete data-to-re
 | --- | --- | --- |
 | R01 | Daily CSV and ECB import with provenance | Real ECB import verified; broker-quality price suitability remains open |
 | R02 | Delayed, cost-aware daily simulation and historical stress | Accounting, lookahead and risk controls tested; approximate reference-price model |
-| R03 | Dashboard, local journal and exports | Browser run and loopback API verified locally; hosted publication pending |
+| R03 | Dashboard, local journal and exports | Published through PR #8; browser, API and hosted checks verified |
+| R04 | Read-only MT5 demo quote monitor | Script, validated snapshots, freshness states and dashboard implemented; historical capture and execution remain separate work |
+| R05 | Streaming paper simulation | Sampled M1 candles, closed-candle SMA, risk/cost-aware hypothetical fills, bounded sample buffer, persistent audit and dashboard controls; broker order execution remains unimplemented |
+| R06 | Paper audit and accounting checks | Cursor-paged event inspection, full cutoff JSONL/CSV audit export and independent reconstruction of simulated cash/exposure/P&L; no signal-quality or execution validation claim |
+| R07 | Closed-D1 MT5 history assessment | Actual 1,500-bar demo bundle validated, archived and imported; one declared daily baseline recorded. Source rights, time/price basis, execution costs and M1 suitability remain unverified |
 
 | ID | Output | Acceptance criteria | Status |
 | --- | --- | --- | --- |
