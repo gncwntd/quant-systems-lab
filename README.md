@@ -4,6 +4,14 @@ An open-source EUR/USD research workspace with a local dashboard, reproducible e
 
 **Status:** local data import, cost-aware daily backtesting, descriptive regimes, historical stress resampling, experiment storage and a dashboard are implemented. A small C reference book is also available. No broker execution, adaptive model or validated trading advantage is established.
 
+A [read-only MT5 demo bridge](docs/MT5_BRIDGE.md) adds a separate EUR/USD bid/ask, spread and freshness monitor. It needs an existing user-configured demo terminal; it does not send orders or provide historical tick storage.
+
+The [streaming paper simulator](docs/STREAMING_PAPER.md) turns new demo observations into sampled M1 candles, closed-candle SMA signals and hypothetical bid/ask fills. Position, net P&L, controls and audit records persist locally, independently of browser polling. Warm-up needs twenty complete minutes; no synthetic trades are preloaded.
+
+The [paper event journal](docs/PAPER_JOURNAL.md) adds event filters/inspection, independent account reconstruction and full cutoff audit downloads in JSONL/CSV. Accounting checks do not verify current prices or trading profitability.
+
+A [closed-D1 MT5 history adapter](docs/MT5_HISTORY.md) provides a separate read-only export and bounded assessment/import path. It needs a one-shot script run in the configured demo terminal; actual source availability and suitability must be assessed. Daily history is separate from M1 forward testing.
+
 ## Direction
 
 - Deliver an inspectable EUR/USD research flow: data → strategy → costs/risk → results → experiment journal.
@@ -58,6 +66,7 @@ The demo processes eight project-authored synthetic events. It ends at bid 99.98
 
 ## Project guide
 
+- [Using the workspace: positions, shutdowns, backtests and tests](docs/USER_GUIDE.md)
 - [Roadmap and checkpoints](docs/ROADMAP.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Research app and methodology](docs/RESEARCH_APP.md)

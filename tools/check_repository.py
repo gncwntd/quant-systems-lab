@@ -19,7 +19,7 @@ ROOT_FILES = {
 }
 SOURCE_DIRS = {
     '.github', 'docs', 'tools', 'tests', 'core', 'python', 'dashboard',
-    'benchmarks', 'examples', 'hdl',
+    'benchmarks', 'examples', 'hdl', 'mt5',
 }
 PRIVATE_PARTS = {
     '.local', '.aws', '.codex', '.agents', '.ssh', 'node_modules',
@@ -53,7 +53,7 @@ def path_errors(name: str, mode: str = '100644') -> list[str]:
         errors.append('real environment configuration is forbidden')
     if path.suffix.lower() in {
         '.pem', '.key', '.p12', '.pfx', '.csv', '.parquet', '.db', '.sqlite',
-        '.bin', '.gz', '.zip', '.pt', '.pth', '.pkl', '.joblib', '.log',
+        '.bin', '.gz', '.zip', '.pt', '.pth', '.pkl', '.joblib', '.log', '.ex5',
     }:
         errors.append('sensitive, generated or external-data extension; review policy first')
     return errors

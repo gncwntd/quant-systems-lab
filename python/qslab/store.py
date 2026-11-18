@@ -14,6 +14,9 @@ class Store:
         with self.connect() as db:
             db.execute('CREATE TABLE IF NOT EXISTS datasets (id TEXT PRIMARY KEY, created TEXT, meta TEXT, bars TEXT)')
             db.execute('CREATE TABLE IF NOT EXISTS runs (id TEXT PRIMARY KEY, created TEXT, dataset_id TEXT, result TEXT)')
+            db.execute('CREATE TABLE IF NOT EXISTS paper_state (id INTEGER PRIMARY KEY, state TEXT NOT NULL)')
+            db.execute('CREATE TABLE IF NOT EXISTS paper_samples (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, payload TEXT NOT NULL)')
+            db.execute('CREATE TABLE IF NOT EXISTS paper_audit (id INTEGER PRIMARY KEY AUTOINCREMENT, session_id TEXT, payload TEXT NOT NULL)')
         self.path.chmod(0o600)
 
     def connect(self):

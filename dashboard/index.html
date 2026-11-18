@@ -12,16 +12,42 @@
     <a class="brand" href="/"><span class="brand-mark">Q</span><span>QUANT SYSTEMS<span class="brand-sub">LAB / RESEARCH TERMINAL</span></span></a>
     <div class="side-label">WORKSPACE</div>
     <a class="nav active" href="#overview"><span>◈</span> Research overview</a>
+    <a class="nav" href="#paper"><span>∿</span> Streaming paper</a>
     <a class="nav" href="#experiments"><span>▤</span> Experiment journal</a>
     <a class="nav" href="#trades"><span>⇄</span> Trade ledger</a>
     <a class="nav" href="#checkpoints"><span>◎</span> Project checkpoints</a>
-    <div class="sidebar-bottom"><span class="dot"></span> LOCAL WORKSPACE<p>Data and experiments stay on this machine.</p><div class="version">v0.1 · Daily reference engine</div></div>
+    <div class="sidebar-bottom"><span class="dot"></span> LOCAL WORKSPACE<p>Data and experiments stay on this machine.</p><div class="version">Daily + streaming research</div></div>
   </aside>
   <main id="overview">
     <header><div class="breadcrumb">Workspace <span>/</span> Research overview</div><div class="mode"><span class="dot"></span> RESEARCH MODE <span class="mode-divider">/</span> NO LIVE ORDERS</div></header>
     <div class="title-row"><div><div class="eyebrow">STRATEGY RESEARCH / EUR·USD</div><h1>Evidence before execution<span>.</span></h1><p class="subtitle">Import data. Test assumptions. Inspect every result.</p></div><button id="export-json" class="button secondary" disabled>↓ Export report</button></div>
     <div id="message" class="message" role="status" hidden></div>
     <section class="source-strip"><div class="instrument">EUR<span>/</span>USD <span class="tag">DAILY</span></div><div id="source-summary">No dataset loaded</div><span id="source-kind" class="tag muted">AWAITING DATA</span></section>
+    <section class="panel quote-panel" aria-label="Read-only demo quotes">
+      <div class="panel-heading"><div><h2>Demo quote monitor <span class="tag">READ ONLY</span></h2><p id="quote-source">MT5 demo terminal · EUR/USD</p></div><span id="quote-status" class="tag muted">CONNECTING</span></div>
+      <div class="quote-grid"><div><small>BID · SELL PRICE</small><strong id="quote-bid">—</strong></div><div><small>ASK · BUY PRICE</small><strong id="quote-ask">—</strong></div><div><small>SPREAD · PIPS</small><strong id="quote-spread">—</strong></div><div><small>QUOTE AGE · APPROX.</small><strong id="quote-age">—</strong></div></div>
+      <p id="quote-reason" class="quote-note" role="status">Waiting for the local bridge.</p><p id="quote-clock" class="quote-note">One-second snapshots. Separate from daily reference-rate backtests.</p>
+    </section>
+    <section class="panel paper-panel" id="paper" aria-label="Streaming paper simulation">
+      <div class="panel-heading"><div><h2>Streaming paper simulation <span class="tag">NO BROKER ORDERS</span></h2><p id="paper-config">Sampled M1 · SMA 5 / 20 · long / cash</p></div><span id="paper-status" class="tag muted">CONNECTING</span></div>
+      <div class="paper-actions"><button id="paper-toggle" class="button secondary" disabled>Pause entries</button><button id="paper-export" class="text-button" disabled>↓ Export snapshot</button><span id="paper-warmup">Waiting for the collector</span></div>
+      <div class="quote-grid paper-metrics"><div><small>SIMULATED EQUITY · USD</small><strong id="paper-equity">—</strong></div><div><small>TOTAL NET P&amp;L · USD</small><strong id="paper-pnl">—</strong></div><div><small>VIRTUAL POSITION · EUR</small><strong id="paper-position">—</strong><span id="paper-entry" class="paper-entry"></span></div><div><small>SIGNAL · CLOSED M1</small><strong id="paper-signal">—</strong></div></div>
+      <p id="paper-reason" class="quote-note" role="status">Collecting new demo observations; no preloaded or synthetic trades.</p><p id="paper-valuation" class="quote-note">Marks include estimated exit costs. Open exposure is retained during gaps.</p>
+      <div class="paper-chart"><svg id="paper-candles" viewBox="0 0 860 170" role="img" aria-label="Sampled minute midpoint candles in raw MT5 server time"></svg></div>
+      <p id="paper-stats" class="quote-note">Waiting for the persistent simulation worker.</p>
+      <div class="table-scroll"><table><thead><tr><th>Recent virtual trade · UTC</th><th>EUR units</th><th>Entry / exit</th><th>Net P&amp;L · USD</th><th>Reason</th></tr></thead><tbody id="paper-trades"><tr><td colspan="5" class="empty-row">No closed virtual trades yet.</td></tr></tbody></table></div>
+      <p id="paper-event" class="quote-note"></p><p class="quote-note">Forward engineering baseline. Sampled quotes are incomplete market data; swaps, latency and broker fills are unmodeled. Warm-up needs 20 complete minutes and restarts after a data gap. Pause stops entries; exits continue.</p>
+    </section>
+    <section class="panel paper-journal" id="paper-journal" aria-label="Paper event journal and accounting">
+      <div class="panel-heading"><div><h2>Paper event journal</h2><p id="journal-caption">Persistent signals, simulated fills and operational events.</p></div><span id="journal-status" class="tag muted">CONNECTING</span></div>
+      <div class="journal-tools"><label>Event filter<select id="journal-filter"><option value="all">All events</option><option value="signal">Signals</option><option value="entry">Entries</option><option value="exit">Exits</option><option value="gap">Data gaps</option><option value="feed">Feed status</option><option value="halt">Risk halts</option><option value="control">Controls</option><option value="source">Source changes</option></select></label><button id="journal-refresh" class="button secondary">Refresh latest</button><button id="journal-older" class="text-button" disabled>Older events →</button><button id="journal-jsonl" class="text-button" disabled>↓ Full audit JSONL</button><button id="journal-csv" class="text-button" disabled>↓ Full audit CSV</button></div>
+      <div class="journal-account"><strong id="journal-check">Waiting for accounting check</strong><span id="journal-check-detail">Reconstructs cash and position from audit fills, independently of the strategy engine.</span></div>
+      <p id="journal-page" class="quote-note">Loading journal…</p>
+      <div class="table-scroll"><table><thead><tr><th>Event / UTC</th><th>Type</th><th>Decision / reason</th><th></th></tr></thead><tbody id="journal-rows"><tr><td colspan="4" class="empty-row">No events loaded.</td></tr></tbody></table></div>
+      <pre id="journal-detail" class="journal-detail" hidden></pre>
+      <p class="quote-note">Accounting checks compare stored records, including the last estimated liquidation mark. They do not establish current prices, signal quality or executable returns. Exports contain all audit events through a fixed event ID; the rolling price buffer is separate.</p>
+    </section>
+    <div class="backtest-label">HISTORICAL DAILY RESEARCH <span>Separate data and experiment records</span></div>
     <div class="work-grid">
       <div class="results">
         <section class="metrics" aria-label="Backtest metrics">
@@ -41,7 +67,7 @@
     </div>
     <section class="panel lower-panel" id="experiments"><div class="panel-heading"><div><h2>Experiment journal</h2><p>Every run is recorded with its configuration and dataset hash.</p></div><span class="tag" id="run-count">0 RUNS</span></div><div class="table-scroll"><table><thead><tr><th>Run / UTC</th><th>Windows</th><th>Net return</th><th>Max drawdown</th><th>Trades</th><th>Dataset</th><th></th></tr></thead><tbody id="experiment-rows"><tr><td colspan="7" class="empty-row">No experiments yet.</td></tr></tbody></table></div></section>
     <section class="panel lower-panel" id="trades"><div class="panel-heading"><div><h2>Trade ledger</h2><p>Hypothetical fills, explicit costs and close reasons.</p></div><button id="export-csv" class="text-button" disabled>↓ Export CSV</button></div><div class="table-scroll"><table><thead><tr><th>Entry → exit</th><th>Side</th><th>EUR units</th><th>Entry / exit ref.</th><th>Costs · USD</th><th>Net P&L · USD</th><th>Close reason</th></tr></thead><tbody id="trade-rows"><tr><td colspan="7" class="empty-row">Run an experiment to inspect its trades.</td></tr></tbody></table></div></section>
-    <section class="lower-grid"><div class="panel" id="checkpoints"><div class="panel-heading"><h2>Project checkpoints</h2><span class="tag">DELIVERY TRACK</span></div><div id="checkpoint-list"></div></div><div class="panel"><div class="panel-heading"><h2>Model & execution assumptions</h2><span class="tag">TRANSPARENCY</span></div><ul id="assumptions"><li>Research mode only. No broker account is connected.</li><li>Import data to start; no synthetic performance is preloaded.</li></ul><div id="risk-events"></div></div></section>
+    <section class="lower-grid"><div class="panel" id="checkpoints"><div class="panel-heading"><h2>Project checkpoints</h2><span class="tag">DELIVERY TRACK</span></div><div id="checkpoint-list"></div></div><div class="panel"><div class="panel-heading"><h2>Model & execution assumptions</h2><span class="tag">TRANSPARENCY</span></div><ul id="assumptions"><li>Historical experiments use imported daily data. Streaming paper uses a separate read-only demo feed.</li><li>Import daily data to run a historical experiment; no synthetic performance is preloaded.</li></ul><div id="risk-events"></div></div></section>
     <footer>QUANT SYSTEMS LAB <span>Local research · reproducible experiments · no live execution</span></footer>
   </main>
 </body>
